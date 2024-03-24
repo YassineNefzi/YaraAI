@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 
-from chatbot import Chatbot
+from chains.chatbot import Chatbot
 
 
 gemini = Chatbot()
