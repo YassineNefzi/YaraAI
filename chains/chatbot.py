@@ -24,17 +24,17 @@ class Chatbot:
             google_api_key=api_key,
             convert_system_message_to_human=True,
         )
-        self.memory = ConversationBufferMemory(return_messages=True)
         self.prompt = ChatPromptTemplate.from_messages(
             [
                 (
                     "system",
                     "You are an AI assistant called Yara.",
                 ),
-                MessagesPlaceholder("history"),
+                MessagesPlaceholder(variable_name="history"),
                 ("human", "{input}"),
             ]
         )
+        self.memory = ConversationBufferMemory(return_messages=True)
         self.chat_chain = (
             RunnablePassthrough.assign(
                 history=RunnableLambda(self.memory.load_memory_variables)
@@ -46,7 +46,11 @@ class Chatbot:
 
     def generate_response(self, user_input):
         data = {"input": user_input}
-        response_data = self.chat_chain.invoke(data)
 
+        response_data = self.chat_chain.invoke(data)
         response = response_data.content
+
+        self.memory.save_context(data, {"output": response})
+
         return response
+    
