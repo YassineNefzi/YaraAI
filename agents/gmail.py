@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv 
+from dotenv import load_dotenv
 
 from operator import itemgetter
 
@@ -28,7 +28,7 @@ from langchain_community.tools.gmail.utils import (
 
 load_dotenv()
 
-api_key = os.environ.get('GOOGLE_API_KEY')
+api_key = os.environ.get("GOOGLE_API_KEY")
 
 
 system_prompt = """Respond to the human as helpfully and accurately as possible. You have access to the following tools:
@@ -130,9 +130,9 @@ toolkit = GmailToolkit(api_resource=api_resource)
 
 tools = toolkit.get_tools()
 
-llm = ChatGoogleGenerativeAI(model='gemini-pro', 
-                            google_api_key=api_key,
-                            convert_system_message_to_human=True )
+llm = ChatGoogleGenerativeAI(
+    model="gemini-pro", google_api_key=api_key, convert_system_message_to_human=True
+)
 
 pre_agent = (
     {
@@ -143,7 +143,8 @@ pre_agent = (
     | llm
     | JSONAgentOutputParser()
 )
-agent = AgentExecutor(agent=pre_agent, tools=tools, verbose=True) 
+agent = AgentExecutor(agent=pre_agent, tools=tools, verbose=True)
+
 
 def generate_draft(user_input):
     data = {"input": user_input}
