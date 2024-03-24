@@ -20,3 +20,14 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+.env
+
+venv/
+venv
+
+credentials.json
+token.json
+
+__pycache__/
+__pycache__
