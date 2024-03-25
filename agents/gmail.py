@@ -29,6 +29,7 @@ from langchain_community.tools.gmail.utils import (
 load_dotenv()
 
 api_key = os.environ.get("GOOGLE_API_KEY")
+secrets_file = os.environ.get("SECRETS_FILE")
 
 
 system_prompt = """Respond to the human as helpfully and accurately as possible. You have access to the following tools:
@@ -123,7 +124,7 @@ prompt = ChatPromptTemplate.from_messages(
 credentials = get_gmail_credentials(
     token_file="token.json",
     scopes=["https://mail.google.com/"],
-    client_secrets_file="C:\\Users\\ynyas\\workspace\\YaraAI\\agents\\credentials.json",
+    client_secrets_file=secrets_file,
 )
 api_resource = build_resource_service(credentials=credentials)
 toolkit = GmailToolkit(api_resource=api_resource)
