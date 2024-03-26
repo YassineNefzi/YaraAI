@@ -10,4 +10,6 @@ beautifulsoup4
 fastapi
 uvicorn[standard]
 streamlit
+unstructured
+unstructured[pdf]
 python-dotenv

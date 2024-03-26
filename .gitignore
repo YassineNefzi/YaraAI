@@ -31,3 +31,6 @@ token.json
 
 __pycache__/
 __pycache__
+
+tests/data
+tests/data/

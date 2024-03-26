@@ -18,3 +18,9 @@ summary_prompt_template = PromptTemplate.from_template(
                 Be as brief as possible, but include all the key points.
                 CONCISE SUMMARY:"""
 )
+
+retrieval_qa_template = """Use the following pieces of context to answer the user's question. 
+Keep the answers very brief and if you don't know the answer, 
+just say that you don't know, don't try to make up an answer. Answser in French.
+----------------
+{context}"""

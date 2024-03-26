@@ -1,13 +1,10 @@
-from langchain_community.document_loaders.web_base import WebBaseLoader
-
-from runnables.chains.summary import summary_chain, stuff_chain
+from runnables.chains.summary import Summary
 
 if __name__ == "__main__":
+
+    summary = Summary()
     # example link : https://lilianweng.github.io/posts/2023-06-23-agent/
     url = input("Enter the link to the article you want to summarize: ")
 
-    loader = WebBaseLoader(url)
-    docs = loader.load()
-
-    summary = stuff_chain.invoke(docs)
-    print(summary.get("output_text"))
+    summary_text = summary.summarize(url)
+    print(summary_text)
