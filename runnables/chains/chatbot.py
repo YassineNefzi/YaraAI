@@ -7,45 +7,29 @@ from operator import itemgetter
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.output_parsers import StrOutputParser
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+
 from langchain.chains import ConversationChain
 from langchain.callbacks import StreamingStdOutCallbackHandler
 from langchain.memory import ConversationBufferMemory
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
 
-load_dotenv()
-
-api_key = os.environ.get("GOOGLE_API_KEY")
+from ..utils.llm import get_llm
+from config.prompt_templates import chatbot_prompt_template
 
 
 class Chatbot:
     def __init__(self):
-        self.llm = ChatGoogleGenerativeAI(
-            model="gemini-pro",
-            google_api_key=api_key,
-            convert_system_message_to_human=True,
-        )
-        self.prompt = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                    "You are an AI assistant called Yara.",
-                ),
-                MessagesPlaceholder(variable_name="history"),
-                ("human", "{input}"),
-            ]
-        )
+        self.llm = get_llm()
+        self.prompt = chatbot_prompt_template
         self.memory = ConversationBufferMemory(return_messages=True)
-        self.parser = StrOutputParser()
         self.chat_chain = (
-            RunnablePassthrough.assign(
+            RunnablePassthrough.assign
+            (
                 history=RunnableLambda(self.memory.load_memory_variables)
                 | itemgetter("history")
             )
             | self.prompt
             | self.llm
-            | self.parser
         )
         
     
@@ -67,13 +51,5 @@ class Chatbot:
 
         return response_data
 
-if __name__ == "__main__":
-    chatbot = Chatbot()
-
-    while True:
-        user_input = input("You: ")
-        asyncio.run(chatbot.stream_response(user_input))
-        print("\n")
-    
     
     
