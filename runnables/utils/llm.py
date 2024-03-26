@@ -8,6 +8,7 @@ load_dotenv()
 
 google_api_key = os.environ.get("GOOGLE_API_KEY")
 
+
 def _get_llm():
 
     return ChatGoogleGenerativeAI(
@@ -17,6 +18,7 @@ def _get_llm():
         convert_system_message_to_human=True,
         max_retries=2,
     )
+
 
 def get_llm():
     return _get_llm() | StrOutputParser()

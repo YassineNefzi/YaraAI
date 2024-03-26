@@ -4,15 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
 
-
-from chains.chatbot import Chatbot
+from runnables.chains.chatbot import Chatbot
 
 
 chatbot = Chatbot()
 
 app = FastAPI()
 
-origins = ["*"]  
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,7 +29,8 @@ def talk(input: str):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="No response found"
         )
-    return {'response' : response}
+    return {"response": response}
+
 
 # @app.websocket("/chat")
 # async def websocket_talk(ws: WebSocket):
@@ -39,6 +39,7 @@ def talk(input: str):
 #         prompt = await ws.receive_text()
 #         response = chatbot.stream_response(prompt)
 #         await ws.send_text(response)
+
 
 @app.websocket("/chat")
 async def chat(websocket: WebSocket):
@@ -55,4 +56,3 @@ async def chat(websocket: WebSocket):
 
     except WebSocketDisconnect:
         pass
-    

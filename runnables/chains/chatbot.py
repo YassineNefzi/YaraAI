@@ -20,16 +20,14 @@ class Chatbot:
         self.prompt = chatbot_prompt_template
         self.memory = ConversationBufferMemory(return_messages=True)
         self.chat_chain = (
-            RunnablePassthrough.assign
-            (
+            RunnablePassthrough.assign(
                 history=RunnableLambda(self.memory.load_memory_variables)
                 | itemgetter("history")
             )
             | self.prompt
             | self.llm
         )
-        
-    
+
     async def stream_response(self, user_input):
         data = {"input": user_input}
 
@@ -47,6 +45,3 @@ class Chatbot:
         self.memory.save_context(data, {"output": response_data})
 
         return response_data
-
-    
-    
