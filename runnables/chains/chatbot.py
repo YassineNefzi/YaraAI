@@ -3,10 +3,7 @@ import asyncio
 from operator import itemgetter
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage, SystemMessage
 
-from langchain.chains import ConversationChain
-from langchain.callbacks import StreamingStdOutCallbackHandler
 from langchain.memory import ConversationBufferMemory
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
 
@@ -32,16 +29,15 @@ class Chatbot:
         data = {"input": user_input}
 
         async for chunk in self.chat_chain.astream(data):
-            for word in chunk.split():  # Split the chunk into words
+            for word in chunk.split():
                 print(word, end=" ", flush=True)
                 await asyncio.sleep(0.1)
 
     def generate_response(self, user_input):
         data = {"input": user_input}
 
-        response_data = self.chat_chain.invoke(data)
-        # response = response_data.content
+        response = self.chat_chain.invoke(data)
 
-        self.memory.save_context(data, {"output": response_data})
+        self.memory.save_context(data, {"output": response})
 
-        return response_data
+        return response

@@ -1,13 +1,10 @@
 import os
 from dotenv import load_dotenv
 
-from langchain_community.llms.ollama import Ollama
-from langchain.callbacks import StreamingStdOutCallbackHandler
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import DirectoryLoader
-from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts.chat import (
     ChatPromptTemplate,
@@ -54,7 +51,6 @@ def retrieve_from_pdf(query: str):
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
         | CHAT_PROMPT
         | llm
-        | StrOutputParser()
     )
     answer = rag_chain.invoke(query)
     return answer
