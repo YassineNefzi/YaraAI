@@ -1,4 +1,4 @@
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.prompts import PromptTemplate ,ChatPromptTemplate, MessagesPlaceholder
 
 
 chatbot_prompt_template = ChatPromptTemplate.from_messages(
@@ -11,3 +11,11 @@ chatbot_prompt_template = ChatPromptTemplate.from_messages(
                 ("human", "{input}"),
             ]
 )
+
+summary_prompt_template = PromptTemplate.from_template(
+
+                """Write a concise summary of the following:
+                "{text}"
+                Be as brief as possible, but include all the key points.
+                CONCISE SUMMARY:"""
+)    

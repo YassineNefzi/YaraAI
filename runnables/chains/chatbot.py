@@ -1,6 +1,3 @@
-import getpass
-import os
-from dotenv import load_dotenv
 import asyncio
 
 from operator import itemgetter
