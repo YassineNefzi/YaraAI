@@ -11,19 +11,9 @@ chatbot = Chatbot()
 
 app = FastAPI()
 
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 @app.post("/chat")
-def talk(input: str):
+def generate_response(input: str):
     response = chatbot.generate_response(input)
     if response is None:
         raise HTTPException(
@@ -32,27 +22,16 @@ def talk(input: str):
     return {"response": response}
 
 
-# @app.websocket("/chat")
-# async def websocket_talk(ws: WebSocket):
-#     await ws.accept()
-#     while True:
-#         prompt = await ws.receive_text()
-#         response = chatbot.stream_response(prompt)
-#         await ws.send_text(response)
+@app.post("/chat/stream")
+async def stream_response(input: str):
+    pass
 
 
-@app.websocket("/chat")
-async def chat(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        while True:
-            data = await websocket.receive()
-            if data is None:
-                break
+@app.post("/summarize")
+def summarize_text(text: str):
+    pass
 
-            async for word in chatbot.stream_response(data):
-                await websocket.send(word)
-                await asyncio.sleep(0.1)  # Adjust delay for streaming effect
 
-    except WebSocketDisconnect:
-        pass
+@app.post("/extract")
+def retrieve_qa(text: str):
+    pass

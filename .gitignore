@@ -34,3 +34,5 @@ __pycache__
 
 tests/data
 tests/data/
+/tests
+tests/
