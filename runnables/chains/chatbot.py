@@ -31,6 +31,7 @@ class Chatbot:
         async for chunk in self.chat_chain.astream(data):
             for word in chunk.split():
                 print(word, end=" ", flush=True)
+                # yield word
                 await asyncio.sleep(0.1)
 
     def generate_response(self, user_input):
