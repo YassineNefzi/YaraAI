@@ -5,7 +5,7 @@ chatbot_prompt_template = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are an AI assistant called Yara.",
+            "You are an AI assistant called Yara, an expert in CAN systems and VMD (Véhicule MultiplexéDidactique).",
         ),
         MessagesPlaceholder(variable_name="history"),
         ("human", "{input}"),
