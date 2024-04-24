@@ -5,7 +5,7 @@ from langserve import add_routes
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
 
-from runnables.chains.chatbot import chat
+from runnables.chains.chatbot import chat_chain
 
 app = FastAPI(
     title="YaraAI",
@@ -21,7 +21,7 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-chatbot = chat()
+chatbot = chat_chain()
 
 add_routes(
     app,

@@ -5,27 +5,25 @@ from langchain_core.messages import AIMessage, HumanMessage
 import asyncio
 
 import server
-from runnables.chains.chatbot import generate_response, stream_response
-
+from runnables.chains.chatbot import generate_response
 
 chatbot = RemoteRunnable("http://localhost:8000/chatbot/")
 
 st.title("YaraAI")
 
-for message in st.session_state:
-    if isinstance(message, AIMessage):
-        with st.chat_message("AI"):
-            st.write(message.content)
-    elif isinstance(message, HumanMessage):
-        with st.chat_message("Human"):
-            st.write(message.content)
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-user_query = st.chat_input("Type your message here...")
-if user_query:
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    with st.chat_message("Human"):
-        st.markdown(user_query)
+if prompt := st.chat_input("What is up?"):
+    st.chat_message("user").markdown(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
-    with st.chat_message("AI"):
-        response = stream_response(chatbot, user_query)
-        st.write_stream(response)
+    response = generate_response(chatbot, prompt)
+    with st.chat_message("assistant"):
+        st.markdown(response)
+
+    st.session_state.messages.append({"role": "assistant", "content": response})
