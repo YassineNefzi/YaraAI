@@ -37,13 +37,14 @@ def generate_response(chatbot: Runnable, user_input: str):
     return response
 
 
-async def stream_response(chatbot: Runnable, user_input: str):
+def stream_response(chatbot: Runnable, user_input: str):
     data = {"input": user_input}
     response_chunks = []
-    async for chunk in chatbot.astream(data):
+    for chunk in chatbot.stream(data):
         response_chunks.append(chunk)
         for char in chunk:
-            print(char, end="", flush=True)
-            # yield char
-            await asyncio.sleep(0.01)
+            # st.write(char)
+            yield char
+            time.sleep(0.01)
         memory.save_context(data, {"output": "".join(response_chunks)})
+    # return "".join(response_chunks)
