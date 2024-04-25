@@ -47,4 +47,4 @@ def stream_response(chatbot: Runnable, user_input: str):
             yield char
             time.sleep(0.01)
         memory.save_context(data, {"output": "".join(response_chunks)})
-    # return "".join(response_chunks)
+    return "".join(response_chunks)
